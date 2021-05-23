@@ -1,0 +1,23 @@
+{
+    "data": [
+        {
+            "description": "",
+            "qty": "",
+            "uom": {
+                "option": [{"name": "SHP"}, {"name": "ABC"}]
+            },
+            "unitPrice": "",
+            "discount": 0,
+            "vat": 0,
+            "currency": {
+                "option": [{"name": "USD"}, {"name": "AED"}]
+            },
+            "vatAmount": 0,
+            "subTotal": 0,
+            "total": 0,
+            "chargeTo": {
+                "option": [{"name": "option1"}, {"name": "option2"}]
+            }
+        }
+    ]
+} 
