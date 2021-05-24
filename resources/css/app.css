@@ -1,0 +1,43 @@
+* {
+    font-family: sans-serif;
+}
+
+.container-table{
+    max-width: 90%;
+}
+
+.cost-detail {
+    color:#00bfbf;
+    margin-top: 50px;
+}
+
+.cost-detail i{
+    margin: 0px 0px 5px 10px;
+}
+
+.cost-detail h3, .cost-detail i {
+    display:inline-block;
+    vertical-align:middle;
+}
+
+.content-table {
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.85em;
+    min-width: 400px;
+    /* border-radius: 5px 5px 0 0; */
+    border: 1px solid #e0e0d1;
+    overflow: hidden;
+}
+
+.iconContainer {
+    color: #d4d4d4;
+}
+
+.grey-col{
+    background-color:#e9ecef;
+}
+
+.iconGreen{
+    color:#00bfbf;
+}

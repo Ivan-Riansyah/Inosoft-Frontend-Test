@@ -11,7 +11,7 @@ const posts = {
             axios
                 .get('http://localhost:3000/data')
                 .then(res => {
-                    console.log(res.data)
+                    //console.log(res.data)
                     let posts = res.data
                     commit('SET_POSTS', posts)
                 })

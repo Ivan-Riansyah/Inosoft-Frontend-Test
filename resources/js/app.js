@@ -7,7 +7,6 @@ import store from './store/index'
 window.Vue = require('vue').default;
 Vue.use(Vuex);
 
-
 const app = new Vue({
     store,
     el: '#app',
