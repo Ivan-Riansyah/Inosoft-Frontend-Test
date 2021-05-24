@@ -28,7 +28,7 @@
                 <input class="form-control" type="text" v-model="post.description" />
               </td>
               <td>
-                <input class="form-control" type="text" v-model="post.qty" />
+                <input class="form-control" type="number" v-model="post.qty" @change="calculateLineTotal(post)" />
               </td>
               <td>
                 <select class="form-control">
@@ -38,13 +38,13 @@
                 </select>
               </td>
               <td>
-                <input class="form-control" type="text" v-model="post.unitPrice" />
+                <input class="form-control" type="number" v-model="post.unitPrice" @change="calculateLineTotal(post)" />
               </td>
               <td>
-                <input class="form-control" type="text" v-model="post.discount" />
+                <input class="form-control" type="number" v-model="post.discount" @change="calculateLineTotal(post)" />
               </td>
               <td>
-                <input class="form-control" type="text" v-model="post.vat" />
+                <input class="form-control" type="number" v-model="post.vat" @change="calculateLineTotal(post)" />
               </td>
               <td scope="row" class="align-middle iconContainer">
                 <i class="fas fa-arrow-right fa-2x"></i>
@@ -74,25 +74,25 @@
                 </select>
               </td>
               <td scope="row" class="iconContainer">
-                <i class="fas fa-minus-square fa-3x" @click="deleteRow(k, post)"></i>
+                <i class="fas fa-minus-square fa-3x" @click="deleteRow(k, post)" ></i>
               </td>
             </tr>
             <tr>
               <td colspan="7" rowspan="2" class="align-middle">Exchange Rate 1 USD=  3.675 AED</td>
               <td class="grey-col">AED in Total</td>
-              <td class="grey-col"></td>
-              <td class="grey-col"></td>
-              <td class="grey-col"></td>
+              <td class="grey-col text-center">{{parseFloat(inTotal.sumVatAmount*3.675).toFixed(2)}}</td>
+              <td class="grey-col text-center">{{parseFloat(inTotal.sumSubTotal*3.675).toFixed(2)}}</td>
+              <td class="grey-col text-center">{{parseFloat(inTotal.sumTotal*3.675).toFixed(2)}}</td>
               <td rowspan="2"></td>
               <td rowspan="2" class="align-middle iconGreen">
                 <i class="fas fa-plus-square fa-3x" @click="addNewRow"></i>
               </td>
             </tr>
             <tr>
-              <td class="grey-col">USD in Total</td>
-              <td class="grey-col"></td>
-              <td class="grey-col"></td>
-              <td class="grey-col"></td>
+              <td class="grey-col ">USD in Total</td>
+              <td class="grey-col text-center">{{parseFloat(inTotal.sumVatAmount).toFixed(2)}}</td>
+              <td class="grey-col text-center">{{parseFloat(inTotal.sumSubTotal).toFixed(2)}}</td>
+              <td class="grey-col text-center">{{parseFloat(inTotal.sumTotal).toFixed(2)}}</td>
             </tr>
           </table>
         </div>
@@ -114,6 +114,15 @@ export default {
   },
   computed: {
       ...mapState('posts', ['posts'])
+  },
+  data() {
+    return{
+      inTotal: {
+        sumVatAmount: 0,
+        sumSubTotal: 0,
+        sumTotal: 0
+      }
+    }
   },
   methods:{
     addNewRow(){
@@ -139,11 +148,50 @@ export default {
     },
     deleteRow(index, post){
       var idx = this.posts.indexOf(post);
-      console.log(idx, index);
+      //console.log(idx, index);
       if(idx > -1) {
         this.posts.splice(idx, 1);
       }
-      //this.calculateTotal();
+      this.calculateTotal();
+    },
+    calculateLineTotal(post){
+      var totalBasic = parseFloat(post.qty) * parseFloat(post.unitPrice);
+      var totalDisc =  (totalBasic * post.discount)/100;
+      var totalAfterdisc = totalBasic - totalDisc;
+      var totalVat = (totalAfterdisc * post.vat)/100;
+      var total = totalAfterdisc + totalVat;
+      if(!isNaN(total)){
+        post.vatAmount = totalVat.toFixed(2);
+        post.subTotal = totalAfterdisc.toFixed(2);
+        post.total = total.toFixed(2);
+      }
+      this.calculateTotal();
+    },
+    calculateTotal(){
+      var sumTotal = this.posts.reduce(function(sum, product){
+        var lineTotal = parseFloat(product.total);
+        if(!isNaN(lineTotal)){
+          return sum + lineTotal;
+        }
+      },0);
+
+      var sumVatTotal = this.posts.reduce(function(sumVat, productVat){
+        var lineVat = parseFloat(productVat.vatAmount);
+        if(!isNaN(lineVat)){
+          return sumVat + lineVat;
+        }
+      },0);
+
+      var sumSubTotal = this.posts.reduce(function(sumSub, productSub){
+        var lineSub = parseFloat(productSub.subTotal);
+        if(!isNaN(lineSub)){
+          return sumSub + lineSub;
+        }
+      },0);
+
+      this.inTotal.sumTotal = sumTotal;
+      this.inTotal.sumVatAmount = sumVatTotal;
+      this.inTotal.sumSubTotal = sumSubTotal;
     }
   }
 };

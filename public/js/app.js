@@ -1993,6 +1993,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.$store.dispatch('posts/loadPosts');
   },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)('posts', ['posts'])),
+  data: function data() {
+    return {
+      inTotal: {
+        sumVatAmount: 0,
+        sumSubTotal: 0,
+        sumTotal: 0
+      }
+    };
+  },
   methods: {
     addNewRow: function addNewRow() {
       this.posts.push({
@@ -2028,13 +2037,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     deleteRow: function deleteRow(index, post) {
-      var idx = this.posts.indexOf(post);
-      console.log(idx, index);
+      var idx = this.posts.indexOf(post); //console.log(idx, index);
 
       if (idx > -1) {
         this.posts.splice(idx, 1);
-      } //this.calculateTotal();
+      }
 
+      this.calculateTotal();
+    },
+    calculateLineTotal: function calculateLineTotal(post) {
+      var totalBasic = parseFloat(post.qty) * parseFloat(post.unitPrice);
+      var totalDisc = totalBasic * post.discount / 100;
+      var totalAfterdisc = totalBasic - totalDisc;
+      var totalVat = totalAfterdisc * post.vat / 100;
+      var total = totalAfterdisc + totalVat;
+
+      if (!isNaN(total)) {
+        post.vatAmount = totalVat.toFixed(2);
+        post.subTotal = totalAfterdisc.toFixed(2);
+        post.total = total.toFixed(2);
+      }
+
+      this.calculateTotal();
+    },
+    calculateTotal: function calculateTotal() {
+      var sumTotal = this.posts.reduce(function (sum, product) {
+        var lineTotal = parseFloat(product.total);
+
+        if (!isNaN(lineTotal)) {
+          return sum + lineTotal;
+        }
+      }, 0);
+      var sumVatTotal = this.posts.reduce(function (sumVat, productVat) {
+        var lineVat = parseFloat(productVat.vatAmount);
+
+        if (!isNaN(lineVat)) {
+          return sumVat + lineVat;
+        }
+      }, 0);
+      var sumSubTotal = this.posts.reduce(function (sumSub, productSub) {
+        var lineSub = parseFloat(productSub.subTotal);
+
+        if (!isNaN(lineSub)) {
+          return sumSub + lineSub;
+        }
+      }, 0);
+      this.inTotal.sumTotal = sumTotal;
+      this.inTotal.sumVatAmount = sumVatTotal;
+      this.inTotal.sumSubTotal = sumSubTotal;
     }
   }
 });
@@ -37946,9 +37996,12 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "number" },
                       domProps: { value: post.qty },
                       on: {
+                        change: function($event) {
+                          return _vm.calculateLineTotal(post)
+                        },
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -37987,9 +38040,12 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "number" },
                       domProps: { value: post.unitPrice },
                       on: {
+                        change: function($event) {
+                          return _vm.calculateLineTotal(post)
+                        },
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38011,9 +38067,12 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "number" },
                       domProps: { value: post.discount },
                       on: {
+                        change: function($event) {
+                          return _vm.calculateLineTotal(post)
+                        },
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38035,9 +38094,12 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "number" },
                       domProps: { value: post.vat },
                       on: {
+                        change: function($event) {
+                          return _vm.calculateLineTotal(post)
+                        },
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38137,11 +38199,27 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", { staticClass: "grey-col" }, [_vm._v("AED in Total")]),
                 _vm._v(" "),
-                _c("td", { staticClass: "grey-col" }),
+                _c("td", { staticClass: "grey-col text-center" }, [
+                  _vm._v(
+                    _vm._s(
+                      parseFloat(_vm.inTotal.sumVatAmount * 3.675).toFixed(2)
+                    )
+                  )
+                ]),
                 _vm._v(" "),
-                _c("td", { staticClass: "grey-col" }),
+                _c("td", { staticClass: "grey-col text-center" }, [
+                  _vm._v(
+                    _vm._s(
+                      parseFloat(_vm.inTotal.sumSubTotal * 3.675).toFixed(2)
+                    )
+                  )
+                ]),
                 _vm._v(" "),
-                _c("td", { staticClass: "grey-col" }),
+                _c("td", { staticClass: "grey-col text-center" }, [
+                  _vm._v(
+                    _vm._s(parseFloat(_vm.inTotal.sumTotal * 3.675).toFixed(2))
+                  )
+                ]),
                 _vm._v(" "),
                 _c("td", { attrs: { rowspan: "2" } }),
                 _vm._v(" "),
@@ -38160,7 +38238,25 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(3)
+              _c("tr", [
+                _c("td", { staticClass: "grey-col " }, [
+                  _vm._v("USD in Total")
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "grey-col text-center" }, [
+                  _vm._v(
+                    _vm._s(parseFloat(_vm.inTotal.sumVatAmount).toFixed(2))
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "grey-col text-center" }, [
+                  _vm._v(_vm._s(parseFloat(_vm.inTotal.sumSubTotal).toFixed(2)))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "grey-col text-center" }, [
+                  _vm._v(_vm._s(parseFloat(_vm.inTotal.sumTotal).toFixed(2)))
+                ])
+              ])
             ],
             2
           )
@@ -38229,20 +38325,6 @@ var staticRenderFns = [
       { staticClass: "align-middle iconContainer", attrs: { scope: "row" } },
       [_c("i", { staticClass: "fas fa-arrow-right fa-2x" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", { staticClass: "grey-col" }, [_vm._v("USD in Total")]),
-      _vm._v(" "),
-      _c("td", { staticClass: "grey-col" }),
-      _vm._v(" "),
-      _c("td", { staticClass: "grey-col" }),
-      _vm._v(" "),
-      _c("td", { staticClass: "grey-col" })
-    ])
   }
 ]
 render._withStripped = true
