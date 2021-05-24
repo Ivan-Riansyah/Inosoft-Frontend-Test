@@ -16,7 +16,7 @@
             "subTotal": 0,
             "total": 0,
             "chargeTo": {
-                "option": [{"name": "option1"}, {"name": "option2"}]
+                "option": [{"name": "opsi 1"}, {"name": "opsi 2"}]
             }
         }
     ]

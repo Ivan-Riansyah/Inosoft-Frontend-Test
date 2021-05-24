@@ -9,9 +9,9 @@ const posts = {
         loadPosts ({commit}) {
             //console.log('load posts');
             axios
-                .get('https://jsonplaceholder.typicode.com/posts')
+                .get('http://localhost:3000/data')
                 .then(res => {
-                    //console.log(res.data)
+                    console.log(res.data)
                     let posts = res.data
                     commit('SET_POSTS', posts)
                 })

@@ -1873,6 +1873,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1955,45 +1962,33 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "tableB",
-  data: function data() {
-    return {
-      invoice_products: [{
-        description: "",
-        qty: "",
-        uom: "",
-        unitPrice: "",
-        discount: 0,
-        vat: 0,
-        currency: "",
-        vatAmount: 0,
-        subTotal: 0,
-        total: 0,
-        charge: ""
-      }],
-      uom: [{
-        name: "SHP"
-      }, {
-        name: "ABC"
-      }],
-      currency: [{
-        name: "USD"
-      }, {
-        name: "AED"
-      }],
-      chargeTo: [{
-        name: "option1"
-      }, {
-        name: "option2"
-      }]
-    };
-  } // mounted(){
-  //     console.log(this.$parent.invoice_products);
-  //     this.$store.dispatch('posts/loadPosts');
+  // data() {
+  //   return {
+  //     invoice_products: [
+  //       {
+  //         description: "",
+  //         qty: "",
+  //         uom: "",
+  //         unitPrice: "",
+  //         discount: 0,
+  //         vat: 0,
+  //         currency: "",
+  //         vatAmount: 0,
+  //         subTotal: 0,
+  //         total: 0,
+  //         charge: "",
+  //       },
+  //     ],
+  //     uom: [{ name: "SHP" }, { name: "ABC" }],
+  //     currency: [{ name: "USD" }, { name: "AED" }],
+  //     chargeTo: [{ name: "option1" }, { name: "option2" }]
+  //   };
   // },
-  // computed: {
-  //     ...mapState('posts', ['posts'])
-  // }
-
+  mounted: function mounted() {
+    //console.log(this.$parent.invoice_products);
+    this.$store.dispatch('posts/loadPosts');
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)('posts', ['posts']))
 });
 
 /***/ }),
@@ -2121,8 +2116,8 @@ var posts = {
     loadPosts: function loadPosts(_ref) {
       var commit = _ref.commit;
       //console.log('load posts');
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('https://jsonplaceholder.typicode.com/posts').then(function (res) {
-        //console.log(res.data)
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://localhost:3000/data').then(function (res) {
+        console.log(res.data);
         var posts = res.data;
         commit('SET_POSTS', posts);
       })["catch"](function (error) {
@@ -37718,8 +37713,251 @@ var render = function() {
             [
               _vm._m(0),
               _vm._v(" "),
-              _vm._l(_vm.invoice_products, function(invoice_product, k) {
+              _vm._l(_vm.posts, function(post, k) {
                 return _c("tr", { key: k }, [
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.description,
+                          expression: "post.description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: post.description },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "description", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.qty,
+                          expression: "post.qty"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: post.qty },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "qty", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "select",
+                      { staticClass: "form-control" },
+                      _vm._l(post.uom.option, function(option) {
+                        return _c("option", { key: option.name }, [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(option.name) +
+                              "\n                "
+                          )
+                        ])
+                      }),
+                      0
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.unitPrice,
+                          expression: "post.unitPrice"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: post.unitPrice },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "unitPrice", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.discount,
+                          expression: "post.discount"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: post.discount },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "discount", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.vat,
+                          expression: "post.vat"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: post.vat },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "vat", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "select",
+                      { staticClass: "form-control" },
+                      _vm._l(post.currency.option, function(option) {
+                        return _c("option", { key: option.name }, [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(option.name) +
+                              "\n                "
+                          )
+                        ])
+                      }),
+                      0
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.vatAmount,
+                          expression: "post.vatAmount"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { readonly: "", type: "text" },
+                      domProps: { value: post.vatAmount },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "vatAmount", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.subTotal,
+                          expression: "post.subTotal"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { readonly: "", type: "text" },
+                      domProps: { value: post.subTotal },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "subTotal", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: post.total,
+                          expression: "post.total"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { readonly: "", type: "text" },
+                      domProps: { value: post.total },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(post, "total", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "select",
+                      { staticClass: "form-control" },
+                      _vm._l(post.chargeTo.option, function(option) {
+                        return _c("option", { key: option.name }, [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(option.name) +
+                              "\n                "
+                          )
+                        ])
+                      }),
+                      0
+                    )
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "td",
                     {
@@ -37731,279 +37969,12 @@ var render = function() {
                         staticClass: "far fa-trash-alt",
                         on: {
                           click: function($event) {
-                            return _vm.deleteRow(k, invoice_product)
+                            return _vm.deleteRow(k, post)
                           }
                         }
                       })
                     ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.description,
-                          expression: "invoice_product.description"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: invoice_product.description },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            invoice_product,
-                            "description",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.qty,
-                          expression: "invoice_product.qty"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: invoice_product.qty },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(invoice_product, "qty", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "select",
-                      { staticClass: "form-control" },
-                      _vm._l(_vm.uom, function(option) {
-                        return _c("option", { key: option.name }, [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(option.name) +
-                              "\n                "
-                          )
-                        ])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.unitPrice,
-                          expression: "invoice_product.unitPrice"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: invoice_product.unitPrice },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            invoice_product,
-                            "unitPrice",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.discount,
-                          expression: "invoice_product.discount"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: invoice_product.discount },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            invoice_product,
-                            "discount",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.vat,
-                          expression: "invoice_product.vat"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: invoice_product.vat },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(invoice_product, "vat", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "select",
-                      { staticClass: "form-control" },
-                      _vm._l(_vm.currency, function(option) {
-                        return _c("option", { key: option.name }, [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(option.name) +
-                              "\n                "
-                          )
-                        ])
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.vatAmount,
-                          expression: "invoice_product.vatAmount"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { readonly: "", type: "text" },
-                      domProps: { value: invoice_product.vatAmount },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            invoice_product,
-                            "vatAmount",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.subTotal,
-                          expression: "invoice_product.subTotal"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { readonly: "", type: "text" },
-                      domProps: { value: invoice_product.subTotal },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            invoice_product,
-                            "subTotal",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: invoice_product.total,
-                          expression: "invoice_product.total"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { readonly: "", type: "text" },
-                      domProps: { value: invoice_product.total },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            invoice_product,
-                            "total",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "select",
-                      { staticClass: "form-control" },
-                      _vm._l(_vm.chargeTo, function(option) {
-                        return _c("option", { key: option.name }, [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(option.name) +
-                              "\n                "
-                          )
-                        ])
-                      }),
-                      0
-                    )
-                  ])
+                  )
                 ])
               })
             ],
@@ -38020,8 +37991,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "thead-light" }, [
-      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-      _vm._v(" "),
       _c("th", { attrs: { width: "12%", scope: "col" } }, [
         _vm._v("Description")
       ]),
@@ -38050,7 +38019,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", { attrs: { width: "5%", scope: "col" } }, [_vm._v("Total")]),
       _vm._v(" "),
-      _c("th", { attrs: { scope: "col" } }, [_vm._v("Charge To")])
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("Charge To")]),
+      _vm._v(" "),
+      _c("th", { attrs: { scope: "col" } })
     ])
   }
 ]
