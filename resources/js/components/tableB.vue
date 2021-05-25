@@ -25,49 +25,49 @@
             </thead>
             <tr v-for="(post, k) in posts" :key="k">
               <td>
-                <input class="form-control" type="text" v-model="post.description" />
+                <input class="form-control" type="text" id="description" name="description" v-model="post.description" />
               </td>
               <td>
-                <input class="form-control" type="number" v-model="post.qty" @change="calculateLineTotal(post)" />
+                <input class="form-control" type="number" id="qty" name="qty" v-model="post.qty" @change="calculateLineTotal(post)" />
               </td>
               <td>
-                <select class="form-control">
+                <select class="form-control" id="uom" name="uom">
                   <option v-for="option in post.uom.option" :key="option.name">
                     {{ option.name }}
                   </option>
                 </select>
               </td>
               <td>
-                <input class="form-control" type="number" v-model="post.unitPrice" @change="calculateLineTotal(post)" />
+                <input class="form-control" type="number" id="unitPrice" name="unitPrice" v-model="post.unitPrice" @change="calculateLineTotal(post)" />
               </td>
               <td>
-                <input class="form-control" type="number" v-model="post.discount" @change="calculateLineTotal(post)" />
+                <input class="form-control" type="number" id="discount" name="discount" v-model="post.discount" @change="calculateLineTotal(post)" />
               </td>
               <td>
-                <input class="form-control" type="number" v-model="post.vat" @change="calculateLineTotal(post)" />
+                <input class="form-control" type="number" id="vat" name="vat" v-model="post.vat" @change="calculateLineTotal(post)" />
               </td>
               <td scope="row" class="align-middle iconContainer">
                 <i class="fas fa-arrow-right fa-2x"></i>
               </td>
               <td>
-                <select class="form-control">
+                <select class="form-control" id="currency" name="currency">
                   <option v-for="option in post.currency.option" :key="option.name">
                     {{ option.name }}
                   </option>
                 </select>
               </td>
-              <td class="align-middle text-center">
+              <td class="align-middle text-center" id="vatAmount" name="vatAmount">
                 <!-- <input readonly class="form-control" type="text" v-model="post.vatAmount" /> -->
                 {{parseFloat(post.vatAmount).toFixed(2)}}
               </td>
-              <td class="align-middle text-center">
+              <td class="align-middle text-center" id="subTotal" name="subTotal">
                 {{parseFloat(post.subTotal).toFixed(2)}}
               </td>
-              <td class="align-middle text-center">
+              <td class="align-middle text-center" id="total" name="total">
                 {{parseFloat(post.total).toFixed(2)}}
               </td>
               <td>
-                <select class="form-control">
+                <select class="form-control" id="chargeTo" name="chargeTo">
                   <option v-for="option in post.chargeTo.option" :key="option.name">
                     {{ option.name }}
                   </option>

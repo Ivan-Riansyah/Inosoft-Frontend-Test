@@ -3,7 +3,7 @@
     <div class="container-fluid buttons-container">
       <a href="">Cancel</a>
       <button class="button-draft">Save as Draft</button>
-      <button class="button-submit">Submit</button>
+      <button type="submit" value="Submit" class="button-submit">Submit</button>
     </div>
   </div>
 </template>

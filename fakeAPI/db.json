@@ -19,5 +19,22 @@
                 "option": [{"name": "opsi 1"}, {"name": "opsi 2"}]
             }
         }
+    ],
+
+    "form": [
+        {
+            "assignedVendor": {
+                "option": [{"name": "Amarit & Associates Logistics Co Ltd"}, {"name": "ABC Logistics Co Ltd"}]
+            },
+            "invoiceTo": {
+                "option": [{"name": "MITO"}, {"name": "ABCD"}]
+            },
+            "costumerContract": {
+                "option": [{"name": "ADNOC-ONSHORE"}, {"name": "ABCD-EFGH"}]
+            },
+            "costumerPONo": {
+                "option": [{"name": "A123XXHTA0192"}, {"name": "ABCDF12345"}]
+            }
+        }
     ]
 } 
